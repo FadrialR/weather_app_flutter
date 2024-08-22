@@ -16,20 +16,21 @@ class _WeatherPageState extends State<WeatherPage> {
 
   // Fetch Weather
   _fetchWeather() async {
-    // Get the current city
-    String cityName = await _weatherService.getCurrentCity();
-
-    // Get weatger for city
     try {
+      String cityName = await _weatherService.getCurrentCity();
       final weather = await _weatherService.getWeather(cityName);
       setState(() {
         _weather = weather;
       });
-    }
-
-    // Any errors
-    catch (e) {
-      print(e);
+    } catch (e) {
+      print('Error fetching weather: $e');
+      setState(() {
+        _weather = Weather(
+          cityName: "Error",
+          temperature: 0.0,
+          mainCondition: "N/A",
+        );
+      });
     }
   }
 
